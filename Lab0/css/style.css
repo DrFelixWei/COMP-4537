@@ -1,0 +1,25 @@
+/* Style for buttons */
+#buttons-container button {
+    height: 5em;
+    width: 10em;
+    margin: 0.5em;
+    border: none;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Ensure buttons wrap if needed */
+#buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    justify-content: start;
+}
+
+/* Optional styling for the container */
+.container {
+    padding: 1em;
+}
