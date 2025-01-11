@@ -112,7 +112,8 @@ class ButtonManager {
 
 class GameManager {
     constructor() {
-        this.buttonManager = new ButtonManager();
+        this.buttonManager = null;
+        this.gameStatus = '';
     }
 
     renderMenu() {
@@ -130,8 +131,8 @@ class GameManager {
                 <div id="game-status"></div>
             </div>
         `;
-        document.getElementById('btnCount').addEventListener('input', this.validateButtonCount);
-        document.getElementById('goButton').addEventListener('click', this.startGame);
+        document.getElementById('btnCount').addEventListener('input', () => this.validateButtonCount());
+        document.getElementById('goButton').addEventListener('click', () => this.startGame());
     }
 
     getButtonCount() {
@@ -157,6 +158,7 @@ class GameManager {
     }
 
     updateGameStatus(statusText) {
+        this.gameStatus = statusText;
         const gameStatus = document.getElementById('game-status');
         gameStatus.textContent = statusText;
     }
@@ -181,25 +183,7 @@ class GameManager {
             messageWrapper.remove(); 
         }
     }
-
-    async startGame() {
-        this.updateGameStatus(messages.getReady);
-
-        const numberOfButtons = this.getButtonCount();
-        const buttons = this.buttonManager.createButtons(numberOfButtons);
-
-        // Wait n seconds showing the buttons in order in a row
-        await new Promise((resolve) => setTimeout(resolve, numberOfButtons * 1000));
-
-        // Scramble the buttons
-        this.updateGameStatus(messages.scrambling);
-        await this.buttonManager.scrambleButtons(numberOfButtons, GAMESETTINGS.scrambleInterval);
-
-        // Start the memory game
-        this.buttonManager.hideButtonNumbers();
-        this.enableGuessing(buttons);
-    }
-
+    
     enableGuessing(buttons) {
         this.updateGameStatus(messages.startGuessing);
 
@@ -224,6 +208,28 @@ class GameManager {
             };
         });
     }
+
+    // MAIN GAME LOOP
+    async startGame() {
+        this.updateGameStatus(messages.getReady);
+
+        this.buttonManager = new ButtonManager();
+
+        const numberOfButtons = this.getButtonCount();
+        const buttons = this.buttonManager.createButtons(numberOfButtons);
+
+        // Wait n seconds showing the buttons in order in a row
+        await new Promise((resolve) => setTimeout(resolve, numberOfButtons * 1000));
+
+        // Scramble the buttons
+        this.updateGameStatus(messages.scrambling);
+        await this.buttonManager.scrambleButtons(numberOfButtons, GAMESETTINGS.scrambleInterval);
+
+        // Start the memory game
+        this.buttonManager.hideButtonNumbers();
+        this.enableGuessing(buttons);
+    }
+
 }
 
 window.onload = function() {
@@ -232,3 +238,9 @@ window.onload = function() {
 };
 
 
+/*
+    I acknowledgthe use of chat-gpt to help:
+    - write the random colour generator method
+    - suggest the idea to use a promise to wait for the buttons to scramble
+    - suggest the idea to store the button's original index in a data attribute of the html element
+*/
