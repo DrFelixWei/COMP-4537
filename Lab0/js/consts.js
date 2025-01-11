@@ -6,4 +6,5 @@ export const gameSettings = {
         height: '5em',
         width: '10em',
     },
+    scrambleInterval: 2000, 
 };

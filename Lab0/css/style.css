@@ -1,7 +1,11 @@
 #buttons-container {
     position: relative;
-    height: 100vh; 
-    width: 100vw; 
+    display: flex;
+    flex-wrap: wrap;  /* Allows buttons to wrap to the next line */
+    justify-content: 'center';
+    gap: 1em;
+    height: 80vh; 
+    width: 90vw; 
     overflow: hidden; /* Prevent buttons from going out of bounds */
 }
 
@@ -16,4 +20,26 @@
     text-align: center;
 }
 
+.hidden {
+    display: none;
+}
 
+
+#game-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2em;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+}
+
+/* 
+    I acknowledge the use of chat-gpt to help generate some of the css choices.
+*/
