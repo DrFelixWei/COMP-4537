@@ -1,5 +1,15 @@
-import { gameSettings } from './consts.js';
 import { messages } from '../lang/messages/en/user.js';
+
+const GAMESETTINGS = {
+    minButtons: 3,
+    maxButtons: 7,
+    defaultBtnCount: 4,
+    buttonSize: {
+        height: '5em',
+        width: '10em',
+    },
+    scrambleInterval: 2000, 
+};
 
 const renderMenu = () => {
     const container = document.getElementById('menu-container');
@@ -8,7 +18,7 @@ const renderMenu = () => {
         <input 
             type="number" 
             id="btnCount" 
-            value="${gameSettings.defaultBtnCount}"
+            value="${GAMESETTINGS.defaultBtnCount}"
         >
         <button id="goButton">Go!</button>
         <div id="message-container" style="marginTop: 0.5em">
@@ -34,10 +44,10 @@ const validateButtonCount = () => {
     const goButton = document.getElementById('goButton');
 
     if (isNaN(buttonCount) 
-        || buttonCount < gameSettings.minButtons 
-        || buttonCount > gameSettings.maxButtons
+        || buttonCount < GAMESETTINGS.minButtons 
+        || buttonCount > GAMESETTINGS.maxButtons
     ) {
-        validationMessageContainer.textContent = messages.invalidButtonCount + ` (${gameSettings.minButtons} - ${gameSettings.maxButtons})`;
+        validationMessageContainer.textContent = messages.invalidButtonCount + ` (${GAMESETTINGS.minButtons} - ${GAMESETTINGS.maxButtons})`;
         goButton.disabled = true;
     } else {
         validationMessageContainer.textContent = '';
@@ -84,7 +94,7 @@ const startGame = async () => {
 
     // Scramble the buttons
     updateGameStatus(messages.scrambling);
-    await scrambleButtons(buttons, numberOfButtons, gameSettings.scrambleInterval);
+    await scrambleButtons(buttons, numberOfButtons, GAMESETTINGS.scrambleInterval);
 
     // Start the memory game
     hideButtonNumbers(buttons);
@@ -109,8 +119,8 @@ const createButtons = (numberOfButtons) => {
         button.dataset.index = i; // Store the button's original index
 
         button.style.backgroundColor = assignRandomColour();
-        button.style.height = gameSettings.buttonSize.height || '5em';
-        button.style.width = gameSettings.buttonSize.width || '10em';
+        button.style.height = GAMESETTINGS.buttonSize.height || '5em';
+        button.style.width = GAMESETTINGS.buttonSize.width || '10em';
 
         button.style.position = 'relative'; // Initially relative for the row layout
 
