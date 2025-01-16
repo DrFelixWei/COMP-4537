@@ -117,7 +117,7 @@ if (addNoteButton) {
   });
 }
 
-// Auto-save notes every 2 seconds for writer.html
+// Auto-save notes 
 if (lastSavedEl) {
   setInterval(() => {
     const notes = Array.from(notesContainer.querySelectorAll('textarea')).map(
@@ -130,7 +130,7 @@ if (lastSavedEl) {
   loadNotes();
 }
 
-// Auto-retrieve notes every 2 seconds for reader.html
+// Auto-retrieve notes
 if (lastRetrievedEl) {
   const refreshNotes = () => {
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
@@ -149,7 +149,7 @@ if (lastRetrievedEl) {
   // Initial load for reader.html
   refreshNotes();
 
-  // Auto-refresh every 2 seconds
+  // Auto-refresh 
   setInterval(refreshNotes, FETCH_DATA_INTERVAL);
 }
 
