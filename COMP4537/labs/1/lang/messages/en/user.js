@@ -11,6 +11,8 @@ export const messages = {
     addNote: "Add Note",
     backToIndex: "Back to Index",
     addNotePlaceholder: "Enter your note here...",
+    remove: "Remove",
+    never: "Never",
   
     // Reader page
     readerPageTitle: "Reader Page",

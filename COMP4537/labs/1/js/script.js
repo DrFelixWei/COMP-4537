@@ -29,14 +29,14 @@ const renderPageText = () => {
     } else if (document.getElementById('writer-page-container')) {
         applyLocalization({
         'writer-title': messages.writerPageTitle,
-        'last-saved': `${messages.lastSaved} Never`,
+        'last-saved': `${messages.lastSaved} ${messages.never}`,
         'add-note': messages.addNote,
         'back-to-index': messages.backToIndex,
         });
     } else if (document.getElementById('reader-page-container')) {
         applyLocalization({
         'reader-title': messages.readerPageTitle,
-        'last-retrieved': `${messages.lastRetrieved} Never`,
+        'last-retrieved': `${messages.lastRetrieved} ${messages.never}`,
         'back-to-index': messages.backToIndex,
         });
     }
@@ -62,7 +62,7 @@ class Note {
     this.textarea.placeholder = messages.addNotePlaceholder;
     this.textarea.dataset.index = this.index;
 
-    this.removeButton.textContent = 'Remove';
+    this.removeButton.textContent = messages.remove;
     this.removeButton.className = 'btn btn-danger';
     this.removeButton.addEventListener('click', () => this.remove());
 
@@ -102,7 +102,7 @@ const loadNotes = () => {
 const saveNotes = (notes) => {
   localStorage.setItem('notes', JSON.stringify(notes));
   if (lastSavedEl) {
-    lastSavedEl.textContent = `Last saved: ${new Date().toLocaleTimeString()}`;
+    lastSavedEl.textContent = `${messages.lastSaved}: ${new Date().toLocaleTimeString()}`;
   }
 };
 
@@ -142,7 +142,7 @@ if (lastRetrievedEl) {
       noteDiv.appendChild(textarea);
       notesContainer.appendChild(noteDiv);
     });
-    lastRetrievedEl.textContent = `Last retrieved: ${new Date().toLocaleTimeString()}`;
+    lastRetrievedEl.textContent = `${messages.lastRetrieved}: ${new Date().toLocaleTimeString()}`;
   };
 
   // Initial load for reader.html
@@ -152,8 +152,25 @@ if (lastRetrievedEl) {
   setInterval(refreshNotes, FETCH_DATA_INTERVAL);
 }
 
+// UNCOMMENT THIS IF WE WANT TO ENABLE SAVING NOTES WHEN NAVIGATING BACK TO INDEX PAGE
+// const backToIndexButton = document.getElementById('back-to-index');
+// if (backToIndexButton) {
+//   backToIndexButton.addEventListener('click', (event) => {
+//     // Prevent default navigation to ensure we can save first
+//     event.preventDefault();
+    
+//     const notes = Array.from(notesContainer.querySelectorAll('textarea')).map(
+//       (textarea) => textarea.value
+//     );
+//     saveNotes(notes);
+
+//     setTimeout(() => {
+//       window.location.href = '../index.html'; 
+//     }, 500); // Delay navigation to allow for note saving
+//   });
+// }
 
 
 /*
-    I acknowledgthe use of chat-gpt to help write this code.
+    I acknowledge the use of chat-gpt to help write this code.
 */
