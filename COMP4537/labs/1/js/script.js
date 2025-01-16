@@ -19,28 +19,27 @@ const applyLocalization = (localizationMap) => {
 
 // Dynamic rendering of localized strings
 const renderPageText = () => {
-  const currentPage = window.location.pathname.split('/').pop();
-  if (currentPage === 'index.html') {
-    applyLocalization({
-      'index-title': messages.indexTitle,
-      'index-subtitle': messages.indexSubtitle,
-      'go-to-writer': messages.goToWriter,
-      'go-to-reader': messages.goToReader,
-    });
-  } else if (currentPage === 'writer.html') {
-    applyLocalization({
-      'writer-title': messages.writerPageTitle,
-      'last-saved': `${messages.lastSaved} Never`,
-      'add-note': messages.addNote,
-      'back-to-index': messages.backToIndex,
-    });
-  } else if (currentPage === 'reader.html') {
-    applyLocalization({
-      'reader-title': messages.readerPageTitle,
-      'last-retrieved': `${messages.lastRetrieved} Never`,
-      'back-to-index': messages.backToIndex,
-    });
-  }
+    if (document.getElementById('index-page-container')) {
+        applyLocalization({
+        'index-title': messages.indexTitle,
+        'index-subtitle': messages.indexSubtitle,
+        'go-to-writer': messages.goToWriter,
+        'go-to-reader': messages.goToReader,
+        });
+    } else if (document.getElementById('writer-page-container')) {
+        applyLocalization({
+        'writer-title': messages.writerPageTitle,
+        'last-saved': `${messages.lastSaved} Never`,
+        'add-note': messages.addNote,
+        'back-to-index': messages.backToIndex,
+        });
+    } else if (document.getElementById('reader-page-container')) {
+        applyLocalization({
+        'reader-title': messages.readerPageTitle,
+        'last-retrieved': `${messages.lastRetrieved} Never`,
+        'back-to-index': messages.backToIndex,
+        });
+    }
 };
 renderPageText();
 
