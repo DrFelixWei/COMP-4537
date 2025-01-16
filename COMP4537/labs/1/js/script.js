@@ -1,8 +1,48 @@
+import { messages } from '../lang/messages/en/user.js';
+
 // Common constants
 const lastSavedEl = document.getElementById('last-saved');
 const lastRetrievedEl = document.getElementById('last-retrieved');
 const notesContainer = document.getElementById('notes-container');
 const addNoteButton = document.getElementById('add-note');
+const FETCH_DATA_INTERVAL = 2000;
+
+// Function to update localized content for each page
+const applyLocalization = (localizationMap) => {
+    Object.entries(localizationMap).forEach(([id, text]) => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.textContent = text;
+      }
+    });
+  };
+// Dynamic rendering of localized strings
+const renderPageText = () => {
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === 'index.html') {
+        applyLocalization({
+        'index-title': messages.indexTitle,
+        'index-subtitle': messages.indexSubtitle,
+        'go-to-writer': messages.goToWriter,
+        'go-to-reader': messages.goToReader,
+        });
+    } else if (currentPage === 'writer.html') {
+        applyLocalization({
+        'writer-title': messages.writerPageTitle,
+        'last-saved': `${messages.lastSaved} Never`,
+        'add-note': messages.addNote,
+        'back-to-index': messages.backToIndex,
+        });
+    } else if (currentPage === 'reader.html') {
+        applyLocalization({
+        'reader-title': messages.readerPageTitle,
+        'last-retrieved': `${messages.lastRetrieved} Never`,
+        'back-to-index': messages.backToIndex,
+        });
+    }
+};
+renderPageText();
+
 
 // Load notes from localStorage
 const loadNotes = () => {
@@ -10,13 +50,15 @@ const loadNotes = () => {
   notesContainer.innerHTML = '';
   notes.forEach((note, index) => {
     const noteDiv = document.createElement('div');
+    noteDiv.className = 'note-container';
     const textarea = document.createElement('textarea');
     textarea.value = note;
     textarea.dataset.index = index;
+    textarea.placeholder = messages.addNotePlaceholder;
 
     const removeButton = document.createElement('button');
     removeButton.textContent = 'Remove';
-    removeButton.className = 'btn';
+    removeButton.className = 'btn btn-danger';
     removeButton.addEventListener('click', () => {
       notes.splice(index, 1);
       saveNotes(notes);
@@ -54,7 +96,7 @@ if (lastSavedEl) {
       (textarea) => textarea.value
     );
     saveNotes(notes);
-  }, 2000);
+  }, FETCH_DATA_INTERVAL);
 
   // Initial load for writer.html
   loadNotes();
@@ -80,7 +122,7 @@ if (lastRetrievedEl) {
   refreshNotes();
 
   // Auto-refresh every 2 seconds
-  setInterval(refreshNotes, 2000);
+  setInterval(refreshNotes, FETCH_DATA_INTERVAL);
 }
 
 
